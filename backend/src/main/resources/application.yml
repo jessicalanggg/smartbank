@@ -18,3 +18,7 @@ management:
         include: health,info
 server:
   port: 8080
+
+smartbank:
+  jwt-secret: ${JWT_SECRET}
+  demo-password: ${DEMO_PASSWORD:}

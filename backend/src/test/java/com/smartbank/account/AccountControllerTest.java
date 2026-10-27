@@ -12,9 +12,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AccountController.class)
+@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc(addFilters = false)
 class AccountControllerTest {
     @Autowired MockMvc mvc;
     @MockitoBean AccountService service;
+    @MockitoBean com.smartbank.auth.AccessService access;
+    @MockitoBean org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder;
 
     @Test
     void returnsAccountAsJson() throws Exception {

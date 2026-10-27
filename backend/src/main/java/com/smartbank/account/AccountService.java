@@ -22,6 +22,12 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
+    public List<AccountResponse> listAccountsForUser(UUID userId) {
+        return repository.findByOwnerUserIdOrderByAccountNumber(userId).stream()
+                .map(AccountResponse::from).toList();
+    }
+
+    @Transactional(readOnly = true)
     public List<AccountResponse> listAccounts() {
         return repository.findAll(Sort.by("accountNumber")).stream()
                 .map(AccountResponse::from)

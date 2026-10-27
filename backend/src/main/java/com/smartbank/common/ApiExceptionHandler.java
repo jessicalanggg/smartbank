@@ -1,6 +1,8 @@
 package com.smartbank.common;
 
 import com.smartbank.account.AccountNotFoundException;
+import com.smartbank.auth.DuplicateEmailException;
+import org.springframework.security.authentication.BadCredentialsException;
 import com.smartbank.transaction.BankingException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ProblemDetail duplicateEmail(DuplicateEmailException ex) {
+        return problem(HttpStatus.CONFLICT, "Registration rejected", "Email is already registered");
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ProblemDetail badCredentials(BadCredentialsException ex) {
+        return problem(HttpStatus.UNAUTHORIZED, "Authentication failed", "Invalid email or password");
+    }
     @ExceptionHandler(AccountNotFoundException.class)
     public ProblemDetail notFound(AccountNotFoundException ex) {
         return problem(HttpStatus.NOT_FOUND, "Account not found", ex.getMessage());

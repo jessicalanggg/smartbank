@@ -20,6 +20,8 @@ public class Account {
     @Column(nullable = false, length = 3)
     private String currency;
     @Version private long version;
+    @Column(name = "owner_user_id") private UUID ownerUserId;
+    public UUID getOwnerUserId() { return ownerUserId; }
 
     protected Account() { }
     public UUID getId() { return id; }

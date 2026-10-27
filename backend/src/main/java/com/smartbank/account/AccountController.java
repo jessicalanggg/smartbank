@@ -8,18 +8,20 @@ import java.util.UUID;
 @RequestMapping("/api/v1/accounts")
 public class AccountController {
     private final AccountService service;
+    private final com.smartbank.auth.AccessService access;
 
-    public AccountController(AccountService service) {
-        this.service = service;
+    public AccountController(AccountService service, com.smartbank.auth.AccessService access) {
+        this.service = service; this.access = access;
     }
 
     @GetMapping
     public List<AccountResponse> list() {
-        return service.listAccounts();
+        return service.listAccountsForUser(access.currentUserId());
     }
 
     @GetMapping("/{id}")
     public AccountResponse get(@PathVariable UUID id) {
+        access.requireOwner(id);
         return service.getAccount(id);
     }
 }
